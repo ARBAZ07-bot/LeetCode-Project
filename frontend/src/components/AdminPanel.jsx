@@ -1,10 +1,10 @@
+import { useState } from 'react';
 import { useForm, useFieldArray } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import axiosClient from '../utils/axiosClient';
 import { useNavigate } from 'react-router';
 
-// Zod schema matching the problem schema
 const problemSchema = z.object({
   title: z.string().min(1, 'Title is required'),
   description: z.string().min(1, 'Description is required'),
@@ -39,6 +39,8 @@ const problemSchema = z.object({
 
 function AdminPanel() {
   const navigate = useNavigate();
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   const {
     register,
     control,
@@ -79,19 +81,22 @@ function AdminPanel() {
   });
 
   const onSubmit = async (data) => {
+    setIsSubmitting(true);
     try {
       await axiosClient.post('/problem/create', data);
       alert('Problem created successfully!');
       navigate('/');
     } catch (error) {
-      alert(`Error: ${error.response?.data?.message || error.message}`);
+      alert(`Error: ${error.response?.data || error.message}`);
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
   return (
     <div className="container mx-auto p-6">
       <h1 className="text-3xl font-bold mb-6">Create New Problem</h1>
-      
+
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
         {/* Basic Information */}
         <div className="card bg-base-100 shadow-lg p-6">
@@ -159,7 +164,7 @@ function AdminPanel() {
         {/* Test Cases */}
         <div className="card bg-base-100 shadow-lg p-6">
           <h2 className="text-xl font-semibold mb-4">Test Cases</h2>
-          
+
           {/* Visible Test Cases */}
           <div className="space-y-4 mb-6">
             <div className="flex justify-between items-center">
@@ -172,7 +177,7 @@ function AdminPanel() {
                 Add Visible Case
               </button>
             </div>
-            
+
             {visibleFields.map((field, index) => (
               <div key={field.id} className="border p-4 rounded-lg space-y-2">
                 <div className="flex justify-end">
@@ -184,19 +189,19 @@ function AdminPanel() {
                     Remove
                   </button>
                 </div>
-                
+
                 <input
                   {...register(`visibleTestCases.${index}.input`)}
                   placeholder="Input"
                   className="input input-bordered w-full"
                 />
-                
+
                 <input
                   {...register(`visibleTestCases.${index}.output`)}
                   placeholder="Output"
                   className="input input-bordered w-full"
                 />
-                
+
                 <textarea
                   {...register(`visibleTestCases.${index}.explanation`)}
                   placeholder="Explanation"
@@ -218,7 +223,7 @@ function AdminPanel() {
                 Add Hidden Case
               </button>
             </div>
-            
+
             {hiddenFields.map((field, index) => (
               <div key={field.id} className="border p-4 rounded-lg space-y-2">
                 <div className="flex justify-end">
@@ -230,13 +235,13 @@ function AdminPanel() {
                     Remove
                   </button>
                 </div>
-                
+
                 <input
                   {...register(`hiddenTestCases.${index}.input`)}
                   placeholder="Input"
                   className="input input-bordered w-full"
                 />
-                
+
                 <input
                   {...register(`hiddenTestCases.${index}.output`)}
                   placeholder="Output"
@@ -250,14 +255,14 @@ function AdminPanel() {
         {/* Code Templates */}
         <div className="card bg-base-100 shadow-lg p-6">
           <h2 className="text-xl font-semibold mb-4">Code Templates</h2>
-          
+
           <div className="space-y-6">
             {[0, 1, 2].map((index) => (
               <div key={index} className="space-y-2">
                 <h3 className="font-medium">
                   {index === 0 ? 'C++' : index === 1 ? 'Java' : 'JavaScript'}
                 </h3>
-                
+
                 <div className="form-control">
                   <label className="label">
                     <span className="label-text">Initial Code</span>
@@ -270,7 +275,7 @@ function AdminPanel() {
                     />
                   </pre>
                 </div>
-                
+
                 <div className="form-control">
                   <label className="label">
                     <span className="label-text">Reference Solution</span>
@@ -288,8 +293,13 @@ function AdminPanel() {
           </div>
         </div>
 
-        <button type="submit" className="btn btn-primary w-full">
-          Create Problem
+        <button type="submit" className="btn btn-primary w-full" disabled={isSubmitting}>
+          {isSubmitting ? (
+            <>
+              <span className="loading loading-spinner"></span>
+              Validating & Creating...
+            </>
+          ) : 'Create Problem'}
         </button>
       </form>
     </div>

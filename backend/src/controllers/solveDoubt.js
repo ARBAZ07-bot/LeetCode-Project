@@ -18,8 +18,8 @@ You are an expert Data Structures and Algorithms (DSA) tutor specializing in hel
 ## CURRENT PROBLEM CONTEXT:
 [PROBLEM_TITLE]: ${title}
 [PROBLEM_DESCRIPTION]: ${description}
-[EXAMPLES]: ${testCases}
-[startCode]: ${startCode}
+[EXAMPLES]: ${JSON.stringify(testCases)}
+[startCode]: ${JSON.stringify(startCode)}
 
 
 ## YOUR CAPABILITIES:

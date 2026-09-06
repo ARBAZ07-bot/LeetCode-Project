@@ -5,18 +5,24 @@ import { z } from 'zod';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, NavLink } from 'react-router';
 import { registerUser } from '../authSlice';
+import ThemeToggle from '../components/ThemeToggle';
 
 const signupSchema = z.object({
   firstName: z.string().min(3, "Minimum character should be 3"),
   emailId: z.string().email("Invalid Email"),
-  password: z.string().min(8, "Password is too weak")
+  password: z.string()
+    .min(8, "Must be at least 8 characters")
+    .regex(/[a-z]/, "Must contain a lowercase letter")
+    .regex(/[A-Z]/, "Must contain an uppercase letter")
+    .regex(/[0-9]/, "Must contain a number")
+    .regex(/[^a-zA-Z0-9]/, "Must contain a symbol")
 });
 
 function Signup() {
   const [showPassword, setShowPassword] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { isAuthenticated, loading } = useSelector((state) => state.auth); // Removed error as it wasn't used
+  const { isAuthenticated, loading } = useSelector((state) => state.auth);
 
   const {
     register,
@@ -35,10 +41,13 @@ function Signup() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4 bg-base-200"> {/* Added a light bg for contrast */}
+    <div className="min-h-screen flex items-center justify-center p-4 bg-base-200 relative">
+      <div className="absolute top-4 right-4">
+        <ThemeToggle />
+      </div>
       <div className="card w-96 bg-base-100 shadow-xl">
         <div className="card-body">
-          <h2 className="card-title justify-center text-3xl mb-6">Leetcode</h2> {/* Added mb-6 for spacing */}
+          <h2 className="card-title justify-center text-3xl mb-6">Leetcode</h2>
           <form onSubmit={handleSubmit(onSubmit)}>
             {/* First Name Field */}
             <div className="form-control">
@@ -48,7 +57,7 @@ function Signup() {
               <input
                 type="text"
                 placeholder="John"
-                className={`input input-bordered w-full ${errors.firstName ? 'input-error' : ''}`} 
+                className={`input input-bordered w-full ${errors.firstName ? 'input-error' : ''}`}
                 {...register('firstName')}
               />
               {errors.firstName && (
@@ -64,7 +73,7 @@ function Signup() {
               <input
                 type="email"
                 placeholder="john@example.com"
-                className={`input input-bordered w-full ${errors.emailId ? 'input-error' : ''}`} // Ensure w-full for consistency
+                className={`input input-bordered w-full ${errors.emailId ? 'input-error' : ''}`}
                 {...register('emailId')}
               />
               {errors.emailId && (
@@ -81,15 +90,14 @@ function Signup() {
                 <input
                   type={showPassword ? "text" : "password"}
                   placeholder="••••••••"
-                  // Added pr-10 (padding-right) to make space for the button
                   className={`input input-bordered w-full pr-10 ${errors.password ? 'input-error' : ''}`}
                   {...register('password')}
                 />
                 <button
                   type="button"
-                  className="absolute top-1/2 right-3 transform -translate-y-1/2 text-gray-500 hover:text-gray-700" // Added transform for better centering, styling
+                  className="absolute top-1/2 right-3 transform -translate-y-1/2 text-gray-500 hover:text-gray-700"
                   onClick={() => setShowPassword(!showPassword)}
-                  aria-label={showPassword ? "Hide password" : "Show password"} // Accessibility
+                  aria-label={showPassword ? "Hide password" : "Show password"}
                 >
                   {showPassword ? (
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -106,22 +114,32 @@ function Signup() {
               {errors.password && (
                 <span className="text-error text-sm mt-1">{errors.password.message}</span>
               )}
+              <label className="label">
+                <span className="label-text-alt text-base-content/50">
+                  Must include uppercase, lowercase, number & symbol
+                </span>
+              </label>
             </div>
 
             {/* Submit Button */}
-            <div className="form-control mt-8 flex justify-center"> 
+            <div className="form-control mt-8 flex justify-center">
               <button
                 type="submit"
-                className={`btn btn-primary ${loading ? 'loading' : ''}`}
+                className={`btn btn-primary ${loading ? 'loading btn-disabled' : ''}`}
                 disabled={loading}
               >
-                {loading ? 'Signing Up...' : 'Sign Up'}
+                {loading ? (
+                  <>
+                    <span className="loading loading-spinner"></span>
+                    Signing Up...
+                  </>
+                ) : 'Sign Up'}
               </button>
             </div>
           </form>
 
           {/* Login Redirect */}
-          <div className="text-center mt-6"> {/* Increased mt for spacing */}
+          <div className="text-center mt-6">
             <span className="text-sm">
               Already have an account?{' '}
               <NavLink to="/login" className="link link-primary">

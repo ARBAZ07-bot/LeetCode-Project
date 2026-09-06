@@ -12,8 +12,8 @@ cloudinary.config({
 const generateUploadSignature = async (req, res) => {
   try {
     const { problemId } = req.params;
-    
-    const userId = req.result._id;
+
+    const userId = req.user._id;
     // Verify problem exists
     const problem = await Problem.findById(problemId);
     if (!problem) {
@@ -23,7 +23,7 @@ const generateUploadSignature = async (req, res) => {
     // Generate unique public_id for the video
     const timestamp = Math.round(new Date().getTime() / 1000);
     const publicId = `leetcode-solutions/${problemId}/${userId}_${timestamp}`;
-    
+
     // Upload parameters
     const uploadParams = {
       timestamp: timestamp,
@@ -61,7 +61,7 @@ const saveVideoMetadata = async (req, res) => {
       duration,
     } = req.body;
 
-    const userId = req.result._id;
+    const userId = req.user._id;
 
     // Verify the upload with Cloudinary
     const cloudinaryResource = await cloudinary.api.resource(
@@ -126,13 +126,13 @@ const deleteVideo = async (req, res) => {
   try {
     const { problemId } = req.params;
 
-    const video = await SolutionVideo.findOneAndDelete({problemId:problemId});
+    const video = await SolutionVideo.findOneAndDelete({ problemId: problemId });
 
     if (!video) {
       return res.status(404).json({ error: 'Video not found' });
     }
 
-    await cloudinary.uploader.destroy(video.cloudinaryPublicId, { resource_type: 'video' , invalidate: true });
+    await cloudinary.uploader.destroy(video.cloudinaryPublicId, { resource_type: 'video', invalidate: true });
 
     res.json({ message: 'Video deleted successfully' });
 
@@ -142,4 +142,4 @@ const deleteVideo = async (req, res) => {
   }
 };
 
-module.exports = {generateUploadSignature,saveVideoMetadata,deleteVideo};
+module.exports = { generateUploadSignature, saveVideoMetadata, deleteVideo };
