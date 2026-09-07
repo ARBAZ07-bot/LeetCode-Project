@@ -38,9 +38,12 @@ function Signup() {
     }
   }, [isAuthenticated, navigate]);
 
-  const onSubmit = (data) => {
-    dispatch(registerUser(data));
-  };
+  const onSubmit = async (data) => {
+  const result = await dispatch(registerUser(data));
+  if (registerUser.fulfilled.match(result)) {
+    navigate('/verify-otp');
+  }
+};
 
   return (
     <div className="min-h-screen flex bg-base-200 relative">
