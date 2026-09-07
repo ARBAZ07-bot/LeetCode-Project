@@ -61,7 +61,7 @@ const ProblemPage = () => {
     fetchProblem();
   }, [problemId]);
 
-  // Update code when language changes
+  // Update code when language changes (problem hata diya dependency se, taaki submit ke baad refetch hone par code reset na ho)
   useEffect(() => {
     if (problem) {
       const matchedStartCode = problem.startCode.find(
@@ -69,7 +69,7 @@ const ProblemPage = () => {
       );
       setCode(matchedStartCode ? matchedStartCode.initialCode : '');
     }
-  }, [selectedLanguage, problem]);
+  }, [selectedLanguage]);
 
   const handleEditorChange = (value) => {
     setCode(value || '');
@@ -121,6 +121,12 @@ const ProblemPage = () => {
       setSubmitResult(response.data);
       setLoading(false);
       setActiveRightTab('result');
+
+      // Agar accepted ho gaya, problem data refetch karo taaki Solutions tab unlock ho jaaye
+      if (response.data.accepted) {
+        const updatedProblem = await axiosClient.get(`/problem/problemById/${problemId}`);
+        setProblem(updatedProblem.data);
+      }
 
     } catch (error) {
       console.error('Error submitting code:', error);
