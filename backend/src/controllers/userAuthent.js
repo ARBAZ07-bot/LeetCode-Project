@@ -11,6 +11,7 @@ const generateOtp = () => Math.floor(100000 + Math.random() * 900000).toString()
 
 const register = async (req, res) => {
 
+    let createdUser;
     try {
         validate(req.body);
         const { firstName, emailId, password } = req.body;
@@ -23,17 +24,22 @@ const register = async (req, res) => {
         req.body.otpExpiry = Date.now() + 10 * 60 * 1000;
         req.body.isVerified = false;
 
-        const user = await User.create(req.body);
+        createdUser = await User.create(req.body);
 
-        await sendOtpEmail(user.emailId, otp);
+        try {
+            await sendOtpEmail(createdUser.emailId, otp);
+        } catch (emailErr) {
+            await User.findByIdAndDelete(createdUser._id);
+            throw new Error("Couldn't send verification email. Please check your email address and try again.");
+        }
 
         res.status(201).json({
-            emailId: user.emailId,
+            emailId: createdUser.emailId,
             message: "OTP sent to your email. Please verify to continue."
         })
     }
     catch (err) {
-        res.status(400).send("Error: " + err);
+        res.status(400).send("Error: " + (err.message || err));
     }
 }
 
