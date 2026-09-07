@@ -151,11 +151,9 @@ function Signup() {
                 {errors.password && (
                   <span className="text-error text-sm mt-1">{errors.password.message}</span>
                 )}
-                <label className="label">
-                  <span className="label-text-alt text-base-content/50">
-                    Must include uppercase, lowercase, number & symbol
-                  </span>
-                </label>
+                <p 
+                    className="text-xs text-base-content/50 mt-1.5">Must include uppercase, lowercase, number & symbol
+                </p>
               </div>
 
               <button
