@@ -43,18 +43,18 @@ function Signup() {
   };
 
   return (
-    <div className="min-h-screen flex bg-base-200 relative overflow-hidden">
+    <div className="min-h-screen flex bg-base-200 relative">
       <div className="absolute top-4 right-4 z-20">
         <ThemeToggle />
       </div>
 
       {/* Hero panel - desktop only */}
-      <div className="hidden lg:flex lg:w-1/2 bg-indigo-600 relative flex-col justify-center px-16 overflow-hidden">
-        <span className="absolute -right-10 -bottom-10 text-[280px] font-black text-indigo-500/30 select-none leading-none">
+      <div className="hidden lg:flex lg:w-1/2 relative flex-col justify-center px-16 overflow-hidden bg-gradient-to-br from-violet-600 to-rose-500">
+        <span className="absolute -right-10 -bottom-10 text-[280px] font-black text-white/10 select-none leading-none">
           {'</>'}
         </span>
 
-        <div className="inline-flex items-center gap-2 bg-lime-300 text-indigo-950 font-bold text-sm px-4 py-1.5 rounded-full w-fit mb-6 border-2 border-indigo-900 shadow-[3px_3px_0_0_#1e1b4b]">
+        <div className="inline-flex items-center gap-2 bg-yellow-300 text-black font-bold text-sm px-4 py-1.5 rounded-full w-fit mb-6 border-2 border-black shadow-[3px_3px_0_0_#000]">
           <Sparkles size={16} />
           New here? Let's go
         </div>
@@ -62,17 +62,17 @@ function Signup() {
         <h1 className="text-5xl font-black text-white tracking-tight leading-tight mb-4 relative z-10">
           Solve. Compete.<br />Level up.
         </h1>
-        <p className="text-indigo-100 text-lg max-w-sm mb-10 relative z-10">
+        <p className="text-violet-50 text-lg max-w-sm mb-10 relative z-10">
           Practice real interview questions, get instant AI hints, and track every win on CodeArena.
         </p>
 
         <div className="flex flex-wrap gap-3 relative z-10">
-          <div className="flex items-center gap-2 bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl px-4 py-2 text-white text-sm font-medium">
-            <Flame size={16} className="text-lime-300" />
+          <div className="flex items-center gap-2 bg-white/15 backdrop-blur-sm border border-white/30 rounded-xl px-4 py-2 text-white text-sm font-medium">
+            <Flame size={16} className="text-yellow-300" />
             150+ Problems
           </div>
-          <div className="flex items-center gap-2 bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl px-4 py-2 text-white text-sm font-medium">
-            <Trophy size={16} className="text-lime-300" />
+          <div className="flex items-center gap-2 bg-white/15 backdrop-blur-sm border border-white/30 rounded-xl px-4 py-2 text-white text-sm font-medium">
+            <Trophy size={16} className="text-yellow-300" />
             AI Doubt Solver
           </div>
         </div>
@@ -85,7 +85,7 @@ function Signup() {
             <Logo size="text-4xl" />
           </div>
 
-          <div className="bg-base-100 border-4 border-indigo-900 rounded-2xl shadow-[8px_8px_0_0_#1e1b4b] p-8">
+          <div className="bg-base-100 border-4 border-black rounded-2xl shadow-[8px_8px_0_0_#000] p-8">
             <h2 className="text-xl font-bold mb-6">Create your account</h2>
 
             <form onSubmit={handleSubmit(onSubmit)}>
@@ -96,7 +96,7 @@ function Signup() {
                 <input
                   type="text"
                   placeholder="John"
-                  className={`input input-bordered w-full border-2 rounded-xl focus:border-indigo-600 focus:outline-none ${errors.firstName ? 'input-error' : ''}`}
+                  className={`input input-bordered w-full border-2 rounded-xl focus:border-violet-600 focus:outline-none ${errors.firstName ? 'input-error' : ''}`}
                   {...register('firstName')}
                 />
                 {errors.firstName && (
@@ -111,7 +111,7 @@ function Signup() {
                 <input
                   type="email"
                   placeholder="john@example.com"
-                  className={`input input-bordered w-full border-2 rounded-xl focus:border-indigo-600 focus:outline-none ${errors.emailId ? 'input-error' : ''}`}
+                  className={`input input-bordered w-full border-2 rounded-xl focus:border-violet-600 focus:outline-none ${errors.emailId ? 'input-error' : ''}`}
                   {...register('emailId')}
                 />
                 {errors.emailId && (
@@ -127,7 +127,7 @@ function Signup() {
                   <input
                     type={showPassword ? "text" : "password"}
                     placeholder="••••••••"
-                    className={`input input-bordered w-full border-2 rounded-xl pr-10 focus:border-indigo-600 focus:outline-none ${errors.password ? 'input-error' : ''}`}
+                    className={`input input-bordered w-full border-2 rounded-xl pr-10 focus:border-violet-600 focus:outline-none ${errors.password ? 'input-error' : ''}`}
                     {...register('password')}
                   />
                   <button
@@ -161,7 +161,7 @@ function Signup() {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full mt-6 py-3 rounded-xl bg-indigo-600 text-white font-bold border-2 border-indigo-900 shadow-[4px_4px_0_0_#1e1b4b] transition-all hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[2px_2px_0_0_#1e1b4b] active:translate-x-1 active:translate-y-1 active:shadow-none disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                className="w-full mt-6 py-3 rounded-xl bg-[#FF5A5F] text-white font-bold border-2 border-black shadow-[4px_4px_0_0_#000] transition-all hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[2px_2px_0_0_#000] active:translate-x-1 active:translate-y-1 active:shadow-none disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2"
               >
                 {loading ? (
                   <>
@@ -175,7 +175,7 @@ function Signup() {
             <div className="text-center mt-6">
               <span className="text-sm">
                 Already have an account?{' '}
-                <NavLink to="/login" className="link link-primary font-semibold">
+                <NavLink to="/login" className="link font-semibold text-violet-600">
                   Login
                 </NavLink>
               </span>

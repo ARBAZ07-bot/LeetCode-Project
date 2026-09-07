@@ -66,7 +66,7 @@ function Homepage() {
       {/* Navigation Bar */}
       <nav className="navbar bg-base-100 shadow-md px-4 sm:px-8 sticky top-0 z-10">
         <div className="flex-1">
-          <NavLink to="/" className="btn btn-ghost gap-2 text-indigo-600">
+          <NavLink to="/" className="btn btn-ghost gap-2 text-violet-600">
             <Code2 size={22} />
             <Logo size="text-xl" />
           </NavLink>
