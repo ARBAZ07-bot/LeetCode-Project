@@ -38,11 +38,8 @@ function Signup() {
     }
   }, [isAuthenticated, navigate]);
 
-  const onSubmit = async (data) => {
-  const result = await dispatch(registerUser(data));
-  if (registerUser.fulfilled.match(result)) {
-    navigate('/verify-otp');
-  }
+ const onSubmit = (data) => {
+  dispatch(registerUser(data));
 };
 
   return (

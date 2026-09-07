@@ -1,20 +1,57 @@
-const { Resend } = require('resend');
-const resend = new Resend(process.env.RESEND_API_KEY);
+const mongoose = require('mongoose');
+const {Schema} = mongoose;
 
-const sendOtpEmail = async (toEmail, otp) => {
-    await resend.emails.send({
-        from: 'CodeArena <onboarding@resend.dev>',
-        to: toEmail,
-        subject: 'Verify your CodeArena account',
-        html: `
-            <div style="font-family: sans-serif; max-width: 480px; margin: auto;">
-                <h2>Verify your email</h2>
-                <p>Your CodeArena verification code is:</p>
-                <p style="font-size: 32px; font-weight: bold; letter-spacing: 6px;">${otp}</p>
-                <p>This code expires in 10 minutes. If you didn't request this, ignore this email.</p>
-            </div>
-        `
-    });
-};
+const userSchema = new Schema({
+    firstName:{
+        type: String,
+        required: true,
+        minLength:3,
+        maxLength:20
+    },
+    lastName:{
+        type:String,
+        minLength:3,
+        maxLength:20,
+    },
+    emailId:{
+        type:String,
+        required:true,
+        unique:true,
+        trim: true,
+        lowercase:true,
+        immutable: true,
+    },
+    age:{
+        type:Number,
+        min:6,
+        max:80,
+    },
+    role:{
+        type:String,
+        enum:['user','admin'],
+        default: 'user'
+    },
+    problemSolved:{
+        type:[{
+            type:Schema.Types.ObjectId,
+            ref:'problem'
+        }],
+    },
+    password:{
+        type:String,
+        required: true
+    }
+},{
+    timestamps:true
+});
 
-module.exports = sendOtpEmail;
+userSchema.post('findOneAndDelete', async function (userInfo) {
+    if (userInfo) {
+      await mongoose.model('submission').deleteMany({ userId: userInfo._id });
+    }
+});
+
+
+const User = mongoose.model("user",userSchema);
+
+module.exports = User;
