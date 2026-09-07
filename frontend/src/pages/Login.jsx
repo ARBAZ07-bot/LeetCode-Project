@@ -108,16 +108,16 @@ function Login() {
                 <label className="label">
                   <span className="label-text font-medium">Password</span>
                 </label>
-                <div className="relative">
+                <div className={`flex items-center gap-2 input input-bordered w-full border-2 rounded-xl focus-within:border-violet-600 ${errors.password ? 'input-error' : ''}`}>
                   <input
                     type={showPassword ? "text" : "password"}
                     placeholder="••••••••"
-                    className={`input input-bordered w-full border-2 rounded-xl pr-10 focus:border-violet-600 focus:outline-none ${errors.password ? 'input-error' : ''}`}
+                    className="grow bg-transparent outline-none min-w-0"
                     {...register('password')}
                   />
                   <button
                     type="button"
-                    className="absolute top-1/2 right-3 transform -translate-y-1/2 text-gray-500 hover:text-gray-700"
+                    className="text-gray-500 hover:text-gray-700 shrink-0"
                     onClick={() => setShowPassword(!showPassword)}
                     aria-label={showPassword ? "Hide password" : "Show password"}
                   >
