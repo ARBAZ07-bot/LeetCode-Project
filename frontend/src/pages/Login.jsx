@@ -43,8 +43,13 @@ function Login() {
         <div className="card-body">
           <h2 className="card-title justify-center text-3xl mb-6">Leetcode</h2>
 
-
           <form onSubmit={handleSubmit(onSubmit)}>
+            {error && (
+              <div className="alert alert-error mb-4 text-sm">
+                <span>{typeof error === 'string' ? error : 'Invalid email or password'}</span>
+              </div>
+            )}
+
             <div className="form-control">
               <label className="label">
                 <span className="label-text">Email</span>
