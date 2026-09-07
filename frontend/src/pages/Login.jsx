@@ -6,6 +6,7 @@ import { useNavigate, NavLink } from 'react-router';
 import { loginUser } from "../authSlice";
 import { useEffect, useState } from 'react';
 import ThemeToggle from '../components/ThemeToggle';
+import Logo from '../components/Logo';
 
 
 const loginSchema = z.object({
@@ -41,7 +42,9 @@ function Login() {
       </div>
       <div className="card w-96 bg-base-100 shadow-xl">
         <div className="card-body">
-          <h2 className="card-title justify-center text-3xl mb-6">Leetcode</h2>
+          <div className="flex justify-center mb-6">
+            <Logo size="text-4xl" />
+          </div>
 
           <form onSubmit={handleSubmit(onSubmit)}>
             {error && (

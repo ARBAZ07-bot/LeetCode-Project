@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import axiosClient from '../utils/axiosClient';
 import { logoutUser } from '../authSlice';
 import ThemeToggle from '../components/ThemeToggle';
+import Logo from '../components/Logo';
 import { Code2, Search, ChevronRight, CheckCircle2 } from 'lucide-react';
 
 function Homepage() {
@@ -65,9 +66,9 @@ function Homepage() {
       {/* Navigation Bar */}
       <nav className="navbar bg-base-100 shadow-md px-4 sm:px-8 sticky top-0 z-10">
         <div className="flex-1">
-          <NavLink to="/" className="btn btn-ghost text-xl font-bold text-primary gap-2">
+          <NavLink to="/" className="btn btn-ghost gap-2 text-indigo-600">
             <Code2 size={22} />
-            LeetCode
+            <Logo size="text-xl" />
           </NavLink>
         </div>
         <div className="flex-none gap-2">
