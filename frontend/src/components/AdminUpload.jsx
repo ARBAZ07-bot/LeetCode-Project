@@ -71,9 +71,23 @@ function AdminUpload() {
 
         } catch (err) {
             console.error('Upload error:', err);
+
+            // Error ka format alag-alag ho sakta hai: Cloudinary { error: { message } }, 
+            // hamara backend { error: "string" }, ya generic axios error.
+            const rawError = err.response?.data?.error;
+            let errorMessage = 'Upload failed. Please try again.';
+
+            if (typeof rawError === 'string') {
+                errorMessage = rawError;
+            } else if (rawError?.message) {
+                errorMessage = rawError.message;
+            } else if (err.message) {
+                errorMessage = err.message;
+            }
+
             setError('root', {
                 type: 'manual',
-                message: err.response?.data?.error || 'Upload failed. Please try again.'
+                message: errorMessage
             });
         } finally {
             setUploading(false);
