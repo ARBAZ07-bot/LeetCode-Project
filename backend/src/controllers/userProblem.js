@@ -140,26 +140,29 @@ const getProblemById = async (req, res) => {
         if (!id)
             return res.status(400).send("ID is Missing");
 
-        const getProblem = await Problem.findById(id).select('_id title description difficulty tags visibleTestCases startCode');
+        const getProblem = await Problem.findById(id).select('_id title description difficulty tags visibleTestCases startCode referenceSolution');
 
         if (!getProblem)
             return res.status(404).send("Problem is Missing");
 
+        const isSolved = req.user.problemSolved.some(
+            (solvedId) => solvedId.toString() === id
+        );
+
         const videos = await SolutionVideo.findOne({ problemId: id });
 
+        const responseData = {
+            ...getProblem.toObject(),
+            referenceSolution: isSolved ? getProblem.referenceSolution : undefined
+        };
+
         if (videos) {
-
-            const responseData = {
-                ...getProblem.toObject(),
-                secureUrl: videos.secureUrl,
-                thumbnailUrl: videos.thumbnailUrl,
-                duration: videos.duration,
-            }
-
-            return res.status(200).send(responseData);
+            responseData.secureUrl = videos.secureUrl;
+            responseData.thumbnailUrl = videos.thumbnailUrl;
+            responseData.duration = videos.duration;
         }
 
-        res.status(200).send(getProblem);
+        res.status(200).send(responseData);
 
     }
     catch (err) {
