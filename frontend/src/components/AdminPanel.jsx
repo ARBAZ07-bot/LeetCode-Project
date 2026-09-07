@@ -102,26 +102,26 @@ function AdminPanel() {
         <div className="card bg-base-100 shadow-lg p-6">
           <h2 className="text-xl font-semibold mb-4">Basic Information</h2>
           <div className="space-y-4">
-            <div className="form-control">
+            <div className="form-control flex flex-col gap-1">
               <label className="label">
                 <span className="label-text">Title</span>
               </label>
               <input
                 {...register('title')}
-                className={`input input-bordered ${errors.title && 'input-error'}`}
+                className={`input input-bordered w-full ${errors.title && 'input-error'}`}
               />
               {errors.title && (
                 <span className="text-error">{errors.title.message}</span>
               )}
             </div>
 
-            <div className="form-control">
+            <div className="form-control flex flex-col gap-1">
               <label className="label">
                 <span className="label-text">Description</span>
               </label>
               <textarea
                 {...register('description')}
-                className={`textarea textarea-bordered h-32 ${errors.description && 'textarea-error'}`}
+                className={`textarea textarea-bordered w-full h-32 ${errors.description && 'textarea-error'}`}
               />
               {errors.description && (
                 <span className="text-error">{errors.description.message}</span>
@@ -129,13 +129,13 @@ function AdminPanel() {
             </div>
 
             <div className="flex gap-4">
-              <div className="form-control w-1/2">
+              <div className="form-control flex flex-col gap-1 w-1/2">
                 <label className="label">
                   <span className="label-text">Difficulty</span>
                 </label>
                 <select
                   {...register('difficulty')}
-                  className={`select select-bordered ${errors.difficulty && 'select-error'}`}
+                  className={`select select-bordered w-full ${errors.difficulty && 'select-error'}`}
                 >
                   <option value="easy">Easy</option>
                   <option value="medium">Medium</option>
@@ -143,13 +143,13 @@ function AdminPanel() {
                 </select>
               </div>
 
-              <div className="form-control w-1/2">
+              <div className="form-control flex flex-col gap-1 w-1/2">
                 <label className="label">
                   <span className="label-text">Tag</span>
                 </label>
                 <select
                   {...register('tags')}
-                  className={`select select-bordered ${errors.tags && 'select-error'}`}
+                  className={`select select-bordered w-full ${errors.tags && 'select-error'}`}
                 >
                   <option value="array">Array</option>
                   <option value="linkedList">Linked List</option>
@@ -263,7 +263,7 @@ function AdminPanel() {
                   {index === 0 ? 'C++' : index === 1 ? 'Java' : 'JavaScript'}
                 </h3>
 
-                <div className="form-control">
+                <div className="form-control flex flex-col gap-1">
                   <label className="label">
                     <span className="label-text">Initial Code</span>
                   </label>
@@ -276,7 +276,7 @@ function AdminPanel() {
                   </pre>
                 </div>
 
-                <div className="form-control">
+                <div className="form-control flex flex-col gap-1">
                   <label className="label">
                     <span className="label-text">Reference Solution</span>
                   </label>
